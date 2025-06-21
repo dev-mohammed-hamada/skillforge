@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import protectedRoutes from './routes/protected.routes';
-import { AuthRequest, requireAuth } from './middlewares/auth.middleware';
 
 dotenv.config();
 
