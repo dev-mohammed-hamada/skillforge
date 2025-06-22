@@ -9,7 +9,11 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 export const createGoal = async (req: AuthRequest, res: Response) => {
   const parsed = createGoalSchema.safeParse(req.body);
   if (!parsed.success)
-    return res.status(400).json({ error: parsed.error.flatten() });
+    throw {
+      status: 400,
+      message: 'Invalid input',
+      errors: parsed.error.flatten(),
+    };
 
   const goal = await prisma.learningGoal.create({
     data: {
@@ -37,7 +41,7 @@ export const getGoalById = async (req: AuthRequest, res: Response) => {
     where: { userId: req.userId, id: req.params.id },
   });
 
-  if (!goal) return res.status(404).json({ message: 'Goal not found' });
+  if (!goal) throw { status: 404, message: 'Goal not found' };
 
   res.json(goal);
 };
@@ -48,7 +52,11 @@ export const updateGoal = async (req: AuthRequest, res: Response) => {
     progress: parseInt(req.body.progress) || undefined,
   });
   if (!parsed.success)
-    return res.status(400).json({ error: parsed.error.flatten() });
+    throw {
+      status: 400,
+      message: 'Invalid input',
+      errors: parsed.error.flatten(),
+    };
 
   const goal = await prisma.learningGoal.findFirst({
     where: {
@@ -57,7 +65,7 @@ export const updateGoal = async (req: AuthRequest, res: Response) => {
     },
   });
 
-  if (!goal) return res.status(404).json({ message: 'Goal not found' });
+  if (!goal) throw { status: 404, message: 'Goal not found' };
 
   const updated = await prisma.learningGoal.update({
     where: { id: goal.id },
@@ -75,7 +83,7 @@ export const deleteGoal = async (req: AuthRequest, res: Response) => {
     },
   });
 
-  if (!goal) return res.status(404).json({ message: 'Goal not found' });
+  if (!goal) throw { status: 404, message: 'Goal not found' };
 
   await prisma.learningGoal.delete({ where: { id: goal.id } });
 

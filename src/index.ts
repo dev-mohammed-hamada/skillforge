@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import protectedRoutes from './routes/protected.routes';
 import authRoutes from './routes/auth.routes';
 import goalsRoutes from './routes/goals.routes';
+import { errorHandler } from './middlewares/error.middleware';
 
 dotenv.config();
 
@@ -20,6 +21,14 @@ app.use('/protected', protectedRoutes);
 
 app.use('/auth', authRoutes);
 app.use('/goal', goalsRoutes);
+
+app.use((req, res, next) => {
+  const error = new Error('Route not found');
+  (error as any).status = 404;
+  next(error);
+});
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);

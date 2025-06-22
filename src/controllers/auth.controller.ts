@@ -7,9 +7,11 @@ import { registerSchema, loginSchema } from '../validators/auth.validator';
 export const registerUser = async (req: Request, res: Response) => {
   const parsed = registerSchema.safeParse(req.body);
   if (!parsed.success) {
-    return res
-      .status(400)
-      .json({ message: 'Invalid input', errors: parsed.error.flatten() });
+    throw {
+      status: 400,
+      message: 'Invalid input',
+      errors: parsed.error.flatten(),
+    };
   }
 
   const { username, email, password } = parsed.data;
@@ -18,7 +20,7 @@ export const registerUser = async (req: Request, res: Response) => {
     where: { OR: [{ email, username }] },
   });
   if (existing)
-    return res.status(400).json({ message: 'Email or username already taken' });
+    throw { status: 400, message: 'Email or username already taken' };
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -39,18 +41,20 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   const parsed = loginSchema.safeParse(req.body);
   if (!parsed.success) {
-    return res
-      .status(400)
-      .json({ message: 'Invalid input', errors: parsed.error.flatten() });
+    throw {
+      status: 400,
+      message: 'Invalid input',
+      errors: parsed.error.flatten(),
+    };
   }
 
   const { email, password } = parsed.data;
 
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+  if (!user) throw { status: 401, message: 'Invalid credentials' };
 
   const match = bcrypt.compare(password, user.password);
-  if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+  if (!match) throw { status: 401, message: 'Invalid credentials' };
 
   const token = generateToken(user.id);
 

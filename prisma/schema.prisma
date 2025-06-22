@@ -23,6 +23,7 @@ model User {
   xp           Int            @default(0)
   createdAt    DateTime       @default(now())
   LearningGoal LearningGoal[]
+  Submission   Submission[]
 }
 
 model LearningGoal {
@@ -34,4 +35,33 @@ model LearningGoal {
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
   userId      String
+}
+
+model Challenge {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  difficulty  Difficulty
+  topic       String
+  solution    String // This is for MVP — later can be test cases/code
+  createdAt   DateTime     @default(now())
+  submissions Submission[]
+}
+
+model Submission {
+  id          String    @id @default(cuid())
+  answer      String
+  isCorrect   Boolean   @default(false)
+  xpEarned    Int       @default(0)
+  submittedAt DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }
