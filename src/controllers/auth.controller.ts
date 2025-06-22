@@ -37,7 +37,6 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  console.log(req.body);
   const parsed = loginSchema.safeParse(req.body);
   if (!parsed.success) {
     return res

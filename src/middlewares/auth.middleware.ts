@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
@@ -13,7 +16,7 @@ export const requireAuth = (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader);
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'Unauthorized: No token' });
   }
@@ -22,6 +25,7 @@ export const requireAuth = (
 
   try {
     const payload = jwt.verify(token, JWT_SECRET) as { userId: string };
+
     req.userId = payload.userId;
     next();
   } catch (err) {

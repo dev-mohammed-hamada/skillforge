@@ -1,7 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.routes';
 import protectedRoutes from './routes/protected.routes';
+import authRoutes from './routes/auth.routes';
+import goalsRoutes from './routes/goals.routes';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 app.use('/protected', protectedRoutes);
 
 app.use('/auth', authRoutes);
+app.use('/goal', goalsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
