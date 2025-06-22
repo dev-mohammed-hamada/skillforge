@@ -22,7 +22,7 @@ export const createGoal = async (req: AuthRequest, res: Response) => {
     },
   });
 
-  res.status(201).json(goal);
+  res.status(201).json({ message: 'Goal created successfully', goal });
 };
 
 export const getAllGoals = async (req: AuthRequest, res: Response) => {
@@ -33,7 +33,7 @@ export const getAllGoals = async (req: AuthRequest, res: Response) => {
     orderBy: { createdAt: 'desc' },
   });
 
-  res.json(goals);
+  res.json({ message: 'Success', goals });
 };
 
 export const getGoalById = async (req: AuthRequest, res: Response) => {
@@ -43,7 +43,7 @@ export const getGoalById = async (req: AuthRequest, res: Response) => {
 
   if (!goal) throw { status: 404, message: 'Goal not found' };
 
-  res.json(goal);
+  res.json({ message: 'Success', goal });
 };
 
 export const updateGoal = async (req: AuthRequest, res: Response) => {
@@ -72,7 +72,7 @@ export const updateGoal = async (req: AuthRequest, res: Response) => {
     data: parsed.data,
   });
 
-  res.json(updated);
+  res.json({ message: 'Goal updated successfully', updated });
 };
 
 export const deleteGoal = async (req: AuthRequest, res: Response) => {

@@ -1,4 +1,7 @@
 {
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "name": "skillforge-backend",
   "version": "1.0.0",
   "main": "index.js",

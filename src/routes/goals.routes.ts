@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import { requireAuth } from '../middlewares/auth.middleware';
 import {
   createGoal,
@@ -10,12 +10,12 @@ import {
 
 const router = express.Router();
 
-router.use(requireAuth as RequestHandler);
+router.use(requireAuth);
 
-router.post('/', createGoal as RequestHandler);
-router.get('/', getAllGoals as RequestHandler);
-router.get('/:id', getGoalById as RequestHandler);
-router.put('/:id', updateGoal as RequestHandler);
-router.delete('/:id', deleteGoal as RequestHandler);
+router.post('/', createGoal);
+router.get('/', getAllGoals);
+router.get('/:id', getGoalById);
+router.put('/:id', updateGoal);
+router.delete('/:id', deleteGoal);
 
 export default router;

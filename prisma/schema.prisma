@@ -38,7 +38,7 @@ model LearningGoal {
 }
 
 model Challenge {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   title       String
   description String
   difficulty  Difficulty
@@ -49,7 +49,7 @@ model Challenge {
 }
 
 model Submission {
-  id          String    @id @default(cuid())
+  id          String    @id @default(uuid())
   answer      String
   isCorrect   Boolean   @default(false)
   xpEarned    Int       @default(0)
