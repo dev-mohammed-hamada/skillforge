@@ -15,12 +15,23 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  role      String   @default("user")
-  xp        Int      @default(0)
-  createdAt DateTime @default(now())
+  id           String         @id @default(uuid())
+  username     String         @unique
+  email        String         @unique
+  password     String
+  role         String         @default("user")
+  xp           Int            @default(0)
+  createdAt    DateTime       @default(now())
+  LearningGoal LearningGoal[]
 }
 
+model LearningGoal {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  status      String   @default("pending") // pending | in_progress | completed
+  progress    Int      @default(0) // 0-100
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+}
